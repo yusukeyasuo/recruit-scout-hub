@@ -1,50 +1,100 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+同期影響レポート:
+- バージョン: 0.0.0 → 1.0.0 (初回憲法作成)
+- 変更された原則: すべてのコア原則を初回確立
+- 追加セクション: コア原則、データ・セキュリティ基準、開発ワークフロー
+- 削除セクション: なし
+- 更新が必要なテンプレート:
+  ✅ constitution.md (このファイル)
+  ⚠ plan-template.md (レビュー待ち)
+  ⚠ spec-template.md (レビュー待ち)
+  ⚠ tasks-template.md (レビュー待ち)
+- フォローアップTODO: なし
+-->
 
-## Core Principles
+# Recruit Scout Hub 憲法
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+## コア原則
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### I. AIの透明性と説明可能性（必須）
+AIによる候補者マッチングは、必ず明確で人間が理解できる説明を提供しなければならない。マッチング結果には、候補者の資格、経験、求人要件を参照した具体的な理由を含めなければならない。AIは人間の意思決定を補助するものであり、代替するものではない。
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+**根拠**: 透明性のあるAIはユーザーの信頼を構築し、情報に基づいた採用判断を可能にする。説明のない推奨は偏見を永続化させ、リクルーターのツールへの信頼を低下させる可能性がある。
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### II. テスト駆動開発（必須）
+すべてのビジネスロジックは、実装前にテストでカバーされなければならない。開発サイクル: テスト作成 → レビュー・承認 → テスト失敗を確認 → 実装 → テスト合格を確認。テストが必須の重要領域: マッチングアルゴリズム、ステータス遷移、データ検証、CRUD操作。
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+**根拠**: スピードより品質を優先する。テストは後退を防ぎ、期待される動作を文書化し、エラーがビジネス成果に影響する採用ワークフローの信頼性を保証する。
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### III. 機能のモジュール性と独立性
+各コア機能（ジョブディスクリプション、ターゲット企業、候補者、マッチング、ステータス管理）は、明確なインターフェースを持つ独立して使用可能なモジュールとして実装されなければならない。機能間で密結合を作ってはならない。データモデルは明示的な関係を持って明確に定義されなければならない。
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+**根拠**: モジュラー設計は段階的な開発、容易なテスト、将来の拡張の柔軟性を可能にする。個人利用に焦点を当てることで、複雑なサービス間通信のないシンプルなアーキテクチャが実現できる。
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+### IV. シンプルさとユーザー体験
+UI/UXは、技術に詳しくないリクルーターにとっての使いやすさを優先しなければならない。一般的な操作（候補者追加、マッチング表示、ステータス更新）は最小限のステップで実行できなければならない。システムは個別レコード管理と、適切な場合は一括操作の両方をサポートしなければならない。
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+**根拠**: 個人用の生産性ツールは直感的で効率的でなければならない。複雑なインターフェースは採用と生産性向上を妨げる。
 
-## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+### V. データプライバシーとセキュリティ
+候補者の個人情報は標準的なセキュリティプラクティスで保護されなければならない。データは適切なアクセス制御で安全に保存されなければならない。データ保持ポリシーは文書化されなければならない。機密フィールド（連絡先情報、履歴書）には追加の保護対策が必要である。
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+**根拠**: 採用データには機密性の高い個人情報が含まれる。個人利用であっても、責任あるデータ取り扱いは不可欠であり、将来的なチーム利用への良い実践となる。
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+## データ・セキュリティ基準
+
+**データモデル要件:**
+- すべてのエンティティは一意の識別子を持たなければならない（UUID推奨）
+- 作成日時と更新日時を記録しなければならない
+- 論理削除機能を実装しなければならない（監査証跡の保持）
+- エンティティ間の関係は明示的にモデル化し検証されなければならない
+
+**セキュリティ要件:**
+- 候補者データはファイルシステム権限で保護された場所に保存されなければならない
+- 機密データ（履歴書、連絡先情報）は可能な限り保存時に暗号化されなければならない
+- 監査目的のアクセスログを実装すべきである
+- データのエクスポート/バックアップ機能を利用可能にしなければならない
+
+**マッチングアルゴリズム基準:**
+- マッチスコアは再現可能でバージョン管理されなければならない
+- マッチング基準は以下を考慮しなければならない: 必須スキル、優遇スキル、経験年数、業界/ドメイン専門知識
+- マッチング結果は以下を含まなければならない: 総合スコア（0-100）、基準別の内訳、具体的なマッチングポイント、潜在的な懸念事項
+- アルゴリズムの変更はバージョン履歴と共に文書化されなければならない
+
+## 開発ワークフロー
+
+**開発プロセス:**
+1. `.specify/specs/`に新機能の仕様を記述
+2. 仕様要件を検証するテストケースを作成
+3. テストについてユーザーの承認を得る
+4. テストに合格するよう機能を実装
+5. テストを合格させたままリファクタリング
+
+**コード品質基準:**
+- すべての関数は明確で説明的な名前を持たなければならない
+- 複雑なロジックには「何を」ではなく「なぜ」を説明するインラインコメントを含めなければならない
+- マジックナンバーは名前付き定数に置き換えなければならない
+- エラーメッセージは役立ち実用的でなければならない
+
+**技術選択:**
+- 技術スタックは仕様フェーズでユーザーの好みに基づいて決定される
+- 特殊なソリューションより標準的でドキュメントが整備されたライブラリを優先する
+- 実用的な範囲で外部依存を最小限に抑える
+
+## ガバナンス
+
+本憲法はRecruit Scout Hubの開発哲学と基準を定義する。すべての実装決定はこれらの原則に沿わなければならない。
+
+**改定プロセス:**
+- 憲法の変更には文書化された根拠が必要
+- バージョンアップはセマンティックバージョニング（MAJOR.MINOR.PATCH）に従う
+- MAJOR: 原則の削除または根本的な変更
+- MINOR: 新しい原則または重要な拡張
+- PATCH: 明確化、文言改善、誤字修正
+
+**コンプライアンス:**
+- 本憲法は他の開発プラクティスに優先する
+- 技術的なトレードオフが生じた場合、原則への準拠を優先する
+- 複雑さはシンプルさの原則に対して正当化されなければならない
+
+**バージョン**: 1.0.0 | **制定日**: 2026-02-08 | **最終改定日**: 2026-02-08
